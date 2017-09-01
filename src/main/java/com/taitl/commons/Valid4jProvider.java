@@ -1,19 +1,11 @@
 package com.taitl.commons;
 
-import org.valid4j.AssertiveProvider;
-import org.valid4j.CheckPolicy;
-import org.valid4j.UnreachablePolicy;
-import org.valid4j.errors.ContractViolation;
-import org.valid4j.impl.CheckingPolicy;
-import org.valid4j.impl.EnsureViolationPolicy;
-import org.valid4j.impl.NeverGetHerePolicy;
-import org.valid4j.impl.RequireViolationPolicy;
-import org.valid4j.impl.ViolationPolicy;
+import java.util.*;
+import java.util.concurrent.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
+import org.valid4j.*;
+import org.valid4j.errors.*;
+import org.valid4j.impl.*;
 
 /**
  * Provider of default assertive policies for valid4j.
@@ -21,7 +13,10 @@ import java.util.concurrent.ArrayBlockingQueue;
 // @SuppressWarnings("unused")
 public class Valid4jProvider implements AssertiveProvider
 {
+	/** Initial capacity for violations queue. */
 	private static final int MAX_CAPACITY = 10;
+
+	/** Violations queue. */
 	private static Queue<ContractViolation> violations;
 
 	/**
@@ -33,6 +28,9 @@ public class Valid4jProvider implements AssertiveProvider
 		return new ArrayList<>(violations);
 	}
 
+	/**
+	 * Constructs an object of this class.
+	 */
 	public Valid4jProvider()
 	{
 		violations = new ArrayBlockingQueue<ContractViolation>(MAX_CAPACITY);
@@ -54,50 +52,5 @@ public class Valid4jProvider implements AssertiveProvider
 	public UnreachablePolicy neverGetHerePolicy()
 	{
 		return new MyNeverGetHerePolicy(violations);
-	}
-}
-
-// Throws IllegalArgumentException instead of valid4j-specific RequireViolation
-class MyRequireViolationPolicy extends RequireViolationPolicy implements ViolationPolicy
-{
-	public MyRequireViolationPolicy(Queue<ContractViolation> violations)
-	{
-		super(violations);
-	}
-
-	@Override
-	public void handleViolation(String message)
-	{
-		throw new IllegalArgumentException(message);
-	}
-}
-
-// Throws IllegalStateException instead of valid4j-specific EnsureViolation
-class MyEnsureViolationPolicy extends EnsureViolationPolicy implements ViolationPolicy
-{
-	public MyEnsureViolationPolicy(Queue<ContractViolation> violations)
-	{
-		super(violations);
-	}
-
-	@Override
-	public void handleViolation(String message)
-	{
-		throw new IllegalStateException(message);
-	}
-}
-
-// Throws IllegalStateException instead of valid4j-specific NeverGetHereViolation
-class MyNeverGetHerePolicy extends NeverGetHerePolicy implements ViolationPolicy
-{
-	public MyNeverGetHerePolicy(Queue<ContractViolation> violations)
-	{
-		super(violations);
-	}
-
-	@Override
-	public void handleViolation(String message)
-	{
-		throw new IllegalStateException(message);
 	}
 }
