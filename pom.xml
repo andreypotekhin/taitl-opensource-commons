@@ -1,0 +1,100 @@
+<!-- Taitl Opensource Commons is a set of general-purpose classes that can be used in 
+   any Taitl open source project. Parent project: taitl-opensource-root Child project: taitl-opensource-parent, and all projects that inherit from it.
+
+   Copyright (c) Taitl Design, LLC.    
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <groupId>com.taitl</groupId>
+      <artifactId>taitl-opensource-root</artifactId>
+      <version>0.0.0-SNAPSHOT</version>
+   </parent>
+   <artifactId>taitl-opensource-commons</artifactId>
+   <version>${taitl-release-version}</version>
+   <name>taitl-opensource-commons</name>
+   <description>Common elements for Taitl projects</description>
+   <properties>
+      <valid4j-version>0.5.0</valid4j-version>
+   </properties>
+   <dependencies>
+       <dependency>
+         <groupId>org.valid4j</groupId>
+         <artifactId>valid4j</artifactId>
+         <version>${valid4j-version}</version>
+      </dependency>
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>${junit-version}</version>
+      </dependency>
+   </dependencies>
+   <build>
+      <plugins>
+         <!-- Enforce coding standards with Checkstyle -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>2.17</version>
+            <executions>
+               <execution>
+                  <id>validate</id>
+                  <phase>validate</phase>
+                  <configuration>
+                     <configLocation>config/checkstyle/Taitl Coding Standards.Checkstyle Settings - Java.xml</configLocation>
+                     <encoding>UTF-8</encoding>
+                     <consoleOutput>true</consoleOutput>
+<!--                      <violationSeverity>warning</violationSeverity> -->
+                     <failsOnError>true</failsOnError>
+                     <linkXRef>false</linkXRef>
+                  </configuration>
+                  <goals>
+                     <goal>check</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <dependencies>
+               <dependency>
+                  <groupId>com.taitl</groupId>
+                  <artifactId>taitl-opensource-dev</artifactId>
+                  <version>${taitl-release-version}</version>
+               </dependency>
+            </dependencies>
+         </plugin>
+      </plugins>
+      <pluginManagement>
+         <plugins>
+            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+            <plugin>
+               <groupId>org.eclipse.m2e</groupId>
+               <artifactId>lifecycle-mapping</artifactId>
+               <version>1.0.0</version>
+               <configuration>
+                  <lifecycleMappingMetadata>
+                     <pluginExecutions>
+                        <pluginExecution>
+                           <pluginExecutionFilter>
+                              <groupId>
+                                 org.apache.maven.plugins
+                              </groupId>
+                              <artifactId>
+                                 maven-checkstyle-plugin
+                              </artifactId>
+                              <versionRange>[2.17,)</versionRange>
+                              <goals>
+                                 <goal>check</goal>
+                              </goals>
+                           </pluginExecutionFilter>
+                           <action>
+                              <ignore></ignore>
+                           </action>
+                        </pluginExecution>
+                     </pluginExecutions>
+                  </lifecycleMappingMetadata>
+               </configuration>
+            </plugin>
+         </plugins>
+      </pluginManagement>
+   </build>
+</project>
